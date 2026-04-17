@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.models.database import Base, engine
 from app.routers import auth
+from app.routers import auth, budget
 
 # Crée toutes les tables dans la base de données au démarrage
 Base.metadata.create_all(bind=engine)
@@ -22,6 +23,7 @@ app.add_middleware(
 
 # Enregistre les routes d'authentification
 app.include_router(auth.router)
+app.include_router(budget.router)
 
 @app.get("/")
 def root():
