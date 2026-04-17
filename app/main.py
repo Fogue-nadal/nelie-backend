@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
+from app.models.database import Base, engine
+from app.routers import auth
+
+# Crée toutes les tables dans la base de données au démarrage
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -14,6 +19,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Enregistre les routes d'authentification
+app.include_router(auth.router)
 
 @app.get("/")
 def root():
